@@ -12,4 +12,9 @@ import java.io.Serializable;
 public class Item implements Serializable {
     private Product product;
     private int quantity;
+
+    public void addQuantity(int q) {
+        quantity += q;
+    }
+
 }

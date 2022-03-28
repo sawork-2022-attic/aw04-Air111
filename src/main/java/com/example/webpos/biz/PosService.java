@@ -13,6 +13,8 @@ public interface PosService {
 
     public Cart add(Cart cart, String productId, int amount);
 
+    public Cart remove(Cart cart, String productId);
+
     public List<Product> products();
 
     public Product randomProduct();

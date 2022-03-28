@@ -12,7 +12,7 @@
     <!-- Bootstrap4 files-->
     <link th:href="@{/css/bootstrap.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/css/ui.css}" rel="stylesheet" type="text/css"/>
-    <link th:href="@{fonts/fontawesome/css/fontawesome-all.min.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/fonts/fontawesome/css/fontawesome-all.min.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/css/OverlayScrollbars.css}" type="text/css" rel="stylesheet"/>
     <!-- Font awesome 5 -->
     <style>
@@ -114,7 +114,7 @@
 		<figcaption class="info-wrap">
 			<a href="#" class="title"><span th:text="${product.name}"></span></a>
 			<div class="action-wrap">
-				<a th:href="@{/add?pid={pid}(pid=${product.id})}" class="btn btn-primary btn-sm float-right"> <i
+				<a th:href="@{/add?pid={pid}&amount={amount}(pid=${product.id},amount=1)}" class="btn btn-primary btn-sm float-right"> <i
                         class="fa fa-cart-plus"></i> Add </a>
 				<div class="price-wrap h5">
 					<span class="price-new" th:text="${product.price}"></span>
@@ -143,7 +143,7 @@
 
 <tbody>
 
-<tr th:each="item : ${cart.items}">
+<tr th:each="item : ${cartItems}">
 	<td>
 <figure class="media">
 	<div class="img-wrap"><img th:src="${item.product.image}"
@@ -155,17 +155,19 @@
 	</td>
 	<td class="text-center">
 		<div class="m-btn-group m-btn-group--pill btn-group mr-2" role="group" aria-label="...">
-																		<button type="button"
-                                                                                class="m-btn btn btn-default"><i
-                                                                                class="fa fa-minus"></i></button>
-																		<button type="button"
-                                                                                class="m-btn btn btn-default"
-                                                                                disabled><span
-                                                                                th:text="${item.quantity}"></span></button>
-																		<button type="button"
-                                                                                class="m-btn btn btn-default"><i
-                                                                                class="fa fa-plus"></i></button>
-																	</div>
+            <a th:href="@{/add?pid={pid}&amount={amount}(pid=${item.product.id},amount=-1)}">
+                <button type="button"
+                        class="m-btn btn btn-default"><i
+                        class="fa fa-minus"></i></button></a>
+            <button type="button"
+                    class="m-btn btn btn-default"
+                    disabled><span
+                    th:text="${item.quantity}"></span></button>
+            <a th:href="@{/add?pid={pid}&amount={amount}(pid=${item.product.id},amount=1)}">
+                <button type="button"
+                        class="m-btn btn btn-default"><i
+                        class="fa fa-plus"></i></button></a>
+        </div>
 	</td>
 	<td>
 		<div class="price-wrap">
@@ -173,7 +175,9 @@
 		</div> <!-- price-wrap .// -->
 	</td>
 	<td class="text-right">
-	<a href="" class="btn btn-outline-danger"> <i class="fa fa-trash"></i></a>
+	<a th:href="@{/remove?pid={pid}(pid=${item.product.id})}"
+       class="btn btn-outline-danger"> <i class="fa fa-trash"></i>
+    </a>
 	</td>
 </tr>
 </tbody>
@@ -196,7 +200,7 @@
                     </dl>
                     <dl class="dlist-align">
                         <dt>Total:</dt>
-                        <dd class="text-right h4 b"><span th:text="${cart.total}"></span></dd>
+                        <dd class="text-right h4 b"><span th:text="${total}"></span></dd>
                     </dl>
                     <div class="row">
                         <div class="col-md-6">

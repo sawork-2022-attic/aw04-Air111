@@ -31,15 +31,31 @@ public class PosController {
     @GetMapping("/")
     public String pos(Model model) {
         model.addAttribute("products", posService.products());
-        model.addAttribute("cart", cart);
+        //model.addAttribute("cart", cart);
+        model.addAttribute("cartItems", cart.getItems());
+        model.addAttribute("total", cart.getTotal());
         return "index";
     }
 
     @GetMapping("/add")
-    public String addByGet(@RequestParam(name = "pid") String pid, Model model) {
-        posService.add(cart, pid, 1);
+    public String addByGet(@RequestParam(name = "pid") String pid,
+                           @RequestParam(name = "amount") int amount,
+                           Model model)
+    {
+        posService.add(cart, pid, amount);
         model.addAttribute("products", posService.products());
-        model.addAttribute("cart", cart);
+        //model.addAttribute("cart", cart);
+        model.addAttribute("cartItems", cart.getItems());
+        model.addAttribute("total", cart.getTotal());
+        return "index";
+    }
+
+    @GetMapping("/remove")
+    public String removeByGet(@RequestParam(name = "pid") String pid, Model model) {
+        posService.remove(cart, pid);
+        model.addAttribute("products", posService.products());
+        model.addAttribute("cartItems", cart.getItems());
+        model.addAttribute("total", cart.getTotal());
         return "index";
     }
 }
