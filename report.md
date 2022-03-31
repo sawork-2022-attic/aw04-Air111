@@ -48,3 +48,23 @@
 
 ## task3
 
+给`getProducts`加上cache后（在手动访问过一次网站了之后）进行load testing，可以看到时间明显缩短。
+
+```shell
+---- Global Information --------------------------------------------------------
+> request count                                        100 (OK=100    KO=0     )
+> min response time                                    225 (OK=225    KO=-     )
+> max response time                                   1032 (OK=1032   KO=-     )
+> mean response time                                   798 (OK=798    KO=-     )
+> std deviation                                        135 (OK=135    KO=-     )
+> response time 50th percentile                        818 (OK=818    KO=-     )
+> response time 75th percentile                        888 (OK=888    KO=-     )
+> response time 95th percentile                        991 (OK=991    KO=-     )
+> response time 99th percentile                       1014 (OK=1014   KO=-     )
+> mean requests/sec                                     50 (OK=50     KO=-     )
+---- Response Time Distribution ------------------------------------------------
+> t < 800 ms                                            43 ( 43%)
+> 800 ms < t < 1200 ms                                  57 ( 57%)
+> t > 1200 ms                                            0 (  0%)
+> failed                                                 0 (  0%)
+```
