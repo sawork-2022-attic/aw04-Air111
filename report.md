@@ -68,3 +68,7 @@
 > t > 1200 ms                                            0 (  0%)
 > failed                                                 0 (  0%)
 ```
+
+session with redis整了好久，主要是我坚持autowire一个Cart（因为我觉得这才符合IoC原则），导致了未完全弄明白的`Field injection is not recommended`问题。
+
+仅测试了session的有效性，用Edge和Chrome分别打开会话，证明确实Cart不同。

@@ -16,11 +16,28 @@ public class PosController {
 
     private PosService posService;
 
+    private HttpSession session;
+
     private Cart cart;
+
+    @Autowired
+    public void setSession(HttpSession session) {
+        this.session = session;
+    }
 
     @Autowired
     public void setCart(Cart cart) {
         this.cart = cart;
+        //session.setAttribute("cart", this.cart);
+    }
+
+    private Cart getCart() {
+        Cart ret = (Cart) session.getAttribute("cart");
+        if (ret == null) {
+            ret = this.cart;
+            session.setAttribute("cart", ret);
+        }
+        return ret;
     }
 
     @Autowired
@@ -32,8 +49,9 @@ public class PosController {
     public String pos(Model model) {
         model.addAttribute("products", posService.products());
         //model.addAttribute("cart", cart);
-        model.addAttribute("cartItems", cart.getItems());
-        model.addAttribute("total", cart.getTotal());
+        Cart c = getCart();
+        model.addAttribute("cartItems", c.getItems());
+        model.addAttribute("total", c.getTotal());
         return "index";
     }
 
@@ -42,20 +60,21 @@ public class PosController {
                            @RequestParam(name = "amount") int amount,
                            Model model)
     {
-        posService.add(cart, pid, amount);
+        Cart c = getCart();
+        session.setAttribute("cart", posService.add(c, pid, amount));
         model.addAttribute("products", posService.products());
-        //model.addAttribute("cart", cart);
-        model.addAttribute("cartItems", cart.getItems());
-        model.addAttribute("total", cart.getTotal());
+        model.addAttribute("cartItems", c.getItems());
+        model.addAttribute("total", c.getTotal());
         return "index";
     }
 
     @GetMapping("/remove")
     public String removeByGet(@RequestParam(name = "pid") String pid, Model model) {
-        posService.remove(cart, pid);
+        Cart c = getCart();
+        session.setAttribute("cart", posService.remove(c, pid));
         model.addAttribute("products", posService.products());
-        model.addAttribute("cartItems", cart.getItems());
-        model.addAttribute("total", cart.getTotal());
+        model.addAttribute("cartItems", c.getItems());
+        model.addAttribute("total", c.getTotal());
         return "index";
     }
 }
